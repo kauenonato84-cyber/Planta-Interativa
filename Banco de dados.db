@@ -3,6 +3,7 @@ USE gestao_climatizacao;
 
 CREATE TABLE usuario (
 id_usuario INT AUTO_INCREMENT NOT NULL,
+situacao ENUM ('Ativo', 'Inativo') NOT NULL DEFAULT 'Inativo',
 nome VARCHAR(100) NOT NULL,
 email VARCHAR(100) NOT NULL UNIQUE,
 senha VARCHAR(255) NOT NULL,
@@ -11,15 +12,23 @@ data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT pk_usuario PRIMARY KEY (id_usuario)
 );
 
+CREATE TABLE bloco(
+codigo INT AUTO_INCREMENT NOT NULL,
+nome VARCHAR (60) NOT NULL,
+descricao VARCHAR (100) NOT NULL,
+CONSTRAINT pk_bloco PRIMARY KEY (codigo)
+);
+
 CREATE TABLE sala (
 id_sala INT AUTO_INCREMENT NOT NULL,
 codigo_sala VARCHAR(50) NOT NULL UNIQUE,
-bloco VARCHAR(50) DEFAULT NULL,
+id_bloco INT NOT NULL,
 andar VARCHAR(20) DEFAULT NULL,
 tipo_ambiente VARCHAR(50) DEFAULT NULL,
 area_m2 DECIMAL(6,2) DEFAULT NULL,
 capacidade_pessoas INT DEFAULT NULL,
-CONSTRAINT pk_sala PRIMARY KEY (id_sala)
+CONSTRAINT pk_sala PRIMARY KEY (id_sala),
+CONSTRAINT fk_bloco FOREIGN KEY (id_bloco) REFERENCES bloco (codigo)
 );
 
 CREATE TABLE arcondicionado (
