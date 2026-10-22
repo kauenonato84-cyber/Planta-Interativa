@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planta da Escola</title>
+    <link rel="stylesheet" href="style.css">
+      
+</head>
+<body>
+     <h1>Planta Baixa - IFBA Ilhéus</h1>
+  <p>Clique na sala para dar zoom:</p>
+
+  <div class="container">
+    <!-- SVG com apenas uma sala -->
+    <svg id="plantaSvg" viewBox="0 0 500 500">
+      <rect 
+        id="Dg" 
+        class="sala" 
+        x="0" 
+        y="400" 
+        width="70" 
+        height="40" 
+        onclick="darZoom(this)"
+      />
+
+        <rect 
+        id="Gabinete" 
+        class="sala" 
+        x="0" 
+        y="370" 
+        width="70" 
+        height="30" 
+        onclick="darZoom(this)"
+      />
+        <rect 
+        id="direcaoAcademica" 
+        class="sala" 
+        x="0" 
+        y="340" 
+        width="70" 
+        height="30" 
+        onclick="darZoom(this)"
+      />
+      
+      <rect 
+        id="copaMenor" 
+        class="sala" 
+        x="0" 
+        y="320" 
+        width="60" 
+        height="20" 
+        onclick="darZoom(this)"
+      />
+      <rect 
+        id="copaMaior" 
+        class="sala" 
+        x="0" 
+        y="280" 
+        width="70" 
+        height="40" 
+        onclick="darZoom(this)"
+      />
+      <rect 
+        id="sala13" 
+        class="sala" 
+        x="0" 
+        y="240" 
+        width="70" 
+        height="40" 
+        onclick="darZoom(this)"
+      />
+
+      <rect 
+        id="sala12" 
+        class="sala" 
+        x="0" 
+        y="180" 
+        width="70" 
+        height="60" 
+        onclick="darZoom(this)"
+      />
+      <rect 
+        id="sala11" 
+        class="sala" 
+        x="0" 
+        y="150" 
+        width="70" 
+        height="30" 
+        onclick="darZoom(this)"
+      />
+      <rect 
+        id="labInfo4" 
+        class="sala" 
+        x="0" 
+        y="120" 
+        width="70" 
+        height="30" 
+        onclick="darZoom(this)"
+      />
+      <rect 
+        id="cotepMaior" 
+        class="sala" 
+        x="0" 
+        y="110" 
+        width="70" 
+        height="20" 
+        onclick="darZoom(this)"
+      />
+     <rect 
+        id="cotepMenor" 
+        class="sala" 
+        x="0" 
+        y="90" 
+        width="70" 
+        height="20" 
+        onclick="darZoom(this)"
+      />
+
+        <rect 
+        id="Coresmenor" 
+        class="sala" 
+        x="110" 
+        y="370" 
+        width="50" 
+        height="20" 
+        onclick="darZoom(this)"
+      />
+              <rect 
+        id="Coresmaior" 
+        class="sala" 
+        x="90" 
+        y="390" 
+        width="70" 
+        height="50" 
+        onclick="darZoom(this)"
+      />
+    </svg>
+
+
+    
+
+
+    <!-- Painel Lateral Simples -->
+    <div id="painel">
+      <h2 id="nomeSala">Clique na sala</h2>
+      <br>
+      <button onclick="resetarZoom()">Visão Geral</button>
+    </div>
+  </div>
+  <script src="animation.js"></script>
+</body>
+</html>
