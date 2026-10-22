@@ -9,7 +9,7 @@ const plantaSvg = document.getElementById('plantaSvg');
 
         const area = sala.getBBox();
         const centroX = area.x + area.width / 2;
-        const centroY = area.y + area.width / 2;
+        const centroY = area.y + area.height / 2;
 
         sala.style.setProperty('--mover-x', `${250 - centroX}px`);
         sala.style.setProperty('--mover-y', `${250 - centroY}px`);
