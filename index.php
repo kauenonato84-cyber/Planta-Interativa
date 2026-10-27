@@ -14,14 +14,15 @@
   <div class="container">
     <!-- SVG com apenas uma sala -->
     <svg id="plantaSvg" viewBox="0 0 500 500">
+      
       <rect 
-        id="Dg" 
+        id="1" 
         class="sala" 
         x="0" 
         y="400" 
         width="70" 
         height="40" 
-        onclick="darZoom(this)"
+        onclick="darZoom(this); carregarDadosSala(this)"
       />
 
         <rect 
@@ -150,14 +151,6 @@
   </div>
   <script src="animation.js"></script>
    <div id="information_painel">
-    <?php
-      include "database_query.php";
-    ?>
   </div>
 </body>
 </html>
- <div id="information_painel">
-    <?php
-      include "database_query.php";
-    ?>
-  </div>

@@ -3,7 +3,6 @@ const plantaSvg = document.getElementById('plantaSvg');
     let salaSelecionada = null;
 
     function darZoom(sala){
-      fetch('index.php?idSala=' + sala.id);
         if (salaSelecionada) {
             salaSelecionada.classList.remove('selecionada');
             
@@ -32,4 +31,25 @@ const plantaSvg = document.getElementById('plantaSvg');
         salas.forEach((sala) => plantaSvg.appendChild(sala));
         document.getElementById('nomeSala').textContent = 'Clique na sala';
     }
-    
+
+function carregarDadosSala(sala) {
+    const painel = document.getElementById('information_painel');
+
+    painel.textContent = 'Carregando dados da sala...';
+
+    fetch('database_query.php?idSala=' + encodeURIComponent(sala.id))
+        .then(resposta => {
+            if (!resposta.ok) {
+                throw new Error('Erro ao consultar a sala.');
+            }
+
+            return resposta.text();
+        })
+        .then(html => {
+            painel.innerHTML = html;
+        })
+        .catch(erro => {
+            console.error(erro);
+            painel.textContent = 'Não foi possível carregar os dados da sala.';
+        });
+}

@@ -1,10 +1,10 @@
 <?php
 include 'db.php';
-$idSala = $_GET['idSala'];
 
-if (!empty($_GET['idSala'])) {
+if (isset($_GET['idSala'])) {
+   
     $idSala = $_GET['idSala'];
-    $sql = "SELECT * FROM gestao_climatizacao WHERE id_sala = ?";
+    $sql = "SELECT * FROM sala WHERE id_sala = ?";
     $resultado = $connect->prepare($sql);
     $resultado->bind_param("s", $idSala);
     $resultado->execute();
@@ -15,29 +15,23 @@ if (!empty($_GET['idSala'])) {
 <table class="tabela-sobre-a-sala">
 
     <tr>
-        <th>XXX</th>
-        <th>YYY</th>
-        <th>ZZZ</th>
-        <th>WWW</th>
-        <th>QQQ</th>
-
+        <th>id_bloco</th>
     </tr>
 
 
-    <?php
+
+<?php
 
     if ($resultado->num_rows > 0) {
         while ($linha = $resultado->fetch_assoc()) {
             echo "<tr>";
 
-            echo "<td>" . $linha['XXX'] . "</td>";
-            echo "<td>" . $linha['YYY'] . "</td>";
-            echo "<td>" . $linha['ZZZ'] . "</td>";
-            echo "<td>" . $linha['WWW'] . "</td>";
-            echo "<td>" . $linha['QQQ'] . "</td>";
+            echo "<td>" . $linha['id_bloco'] . "</td>";
             echo "</tr>";
         }
     }
 }
     ?>
+
 </table>
+
