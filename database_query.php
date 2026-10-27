@@ -2,11 +2,15 @@
 include 'db.php';
 $idSala = $_GET['idSala'];
 
-if(empty($_get['idSala']) != true){
+if (!empty($_GET['idSala'])) {
+    $idSala = $_GET['idSala'];
     $sql = "SELECT * FROM gestao_climatizacao WHERE id_sala = ?";
-$resultado = $connect -> prepare($sql);
-$resultado->bind_param("s", $idSala);
-$resultado->execute();
+    $resultado = $connect->prepare($sql);
+    $resultado->bind_param("s", $idSala);
+    $resultado->execute();
+    $resultado = $resultado->get_result();
+
+
 ?>
 <table class="tabela-sobre-a-sala">
 
@@ -18,13 +22,11 @@ $resultado->execute();
         <th>QQQ</th>
 
     </tr>
-    <?php
-    
 
+
+    <?php
 
     if ($resultado->num_rows > 0) {
-
-
         while ($linha = $resultado->fetch_assoc()) {
             echo "<tr>";
 
@@ -36,7 +38,6 @@ $resultado->execute();
             echo "</tr>";
         }
     }
-
-    ?>       
-</table>
 }
+    ?>
+</table>
