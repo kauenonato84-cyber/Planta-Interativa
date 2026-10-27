@@ -5,6 +5,7 @@ const plantaSvg = document.getElementById('plantaSvg');
     function darZoom(sala){
         if (salaSelecionada) {
             salaSelecionada.classList.remove('selecionada');
+            fetch('database_query.php?idSala=' + sala.id);
         }
 
         const area = sala.getBBox();
@@ -30,3 +31,4 @@ const plantaSvg = document.getElementById('plantaSvg');
         salas.forEach((sala) => plantaSvg.appendChild(sala));
         document.getElementById('nomeSala').textContent = 'Clique na sala';
     }
+    

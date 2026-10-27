@@ -149,5 +149,15 @@
     </div>
   </div>
   <script src="animation.js"></script>
+   <div id="information_painel">
+    <?php
+      include "database_query.php";
+    ?>
+  </div>
 </body>
 </html>
+ <div id="information_painel">
+    <?php
+      include "database_query.php";
+    ?>
+  </div>
