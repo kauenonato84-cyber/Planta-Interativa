@@ -3,9 +3,10 @@ const plantaSvg = document.getElementById('plantaSvg');
     let salaSelecionada = null;
 
     function darZoom(sala){
+      fetch('index.php?idSala=' + sala.id);
         if (salaSelecionada) {
             salaSelecionada.classList.remove('selecionada');
-            fetch('database_query.php?idSala=' + sala.id);
+            
         }
 
         const area = sala.getBBox();

@@ -2,8 +2,9 @@
 include 'db.php';
 $idSala = $_GET['idSala'];
 
-$sql = "SELECT * FROM agendamentos WHERE id_sala = ?";
-$resultado = $conexao->prepare($sql);
+if(empty($_get['idSala']) != true){
+    $sql = "SELECT * FROM gestao_climatizacao WHERE id_sala = ?";
+$resultado = $connect -> prepare($sql);
 $resultado->bind_param("s", $idSala);
 $resultado->execute();
 ?>
@@ -38,3 +39,4 @@ $resultado->execute();
 
     ?>       
 </table>
+}

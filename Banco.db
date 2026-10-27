@@ -1,0 +1,70 @@
+CREATE DATABASE gestao_climatizacao;
+USE gestao_climatizacao;
+
+CREATE TABLE usuario (
+id_usuario INT AUTO_INCREMENT NOT NULL,
+situacao ENUM ('Ativo', 'Inativo') NOT NULL DEFAULT 'Inativo',
+nome VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL UNIQUE,
+senha VARCHAR(255) NOT NULL,
+perfil ENUM('Admin', 'Tecnico') NOT NULL DEFAULT 'Tecnico',
+data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+CONSTRAINT pk_usuario PRIMARY KEY (id_usuario)
+);
+
+CREATE TABLE bloco(
+codigo INT AUTO_INCREMENT NOT NULL,
+nome VARCHAR (60) NOT NULL,
+descricao VARCHAR (100) NOT NULL,
+CONSTRAINT pk_bloco PRIMARY KEY (codigo)
+);
+
+CREATE TABLE sala (
+id_sala INT AUTO_INCREMENT NOT NULL,
+codigo_sala VARCHAR(50) NOT NULL UNIQUE,
+id_bloco INT NOT NULL,
+andar VARCHAR(20) DEFAULT NULL,
+tipo_ambiente VARCHAR(50) DEFAULT NULL,
+area_m2 DECIMAL(6,2) DEFAULT NULL,
+capacidade_pessoas INT DEFAULT NULL,
+CONSTRAINT pk_sala PRIMARY KEY (id_sala),
+CONSTRAINT fk_bloco FOREIGN KEY (id_bloco) REFERENCES bloco (codigo)
+);
+
+CREATE TABLE arcondicionado (
+id_ar INT AUTO_INCREMENT NOT NULL,
+numero_serie VARCHAR(100) DEFAULT NULL,
+marca VARCHAR(50) NOT NULL,
+modelo VARCHAR(50) DEFAULT NULL,
+capacidade_btu INT DEFAULT NULL,
+tensao_v INT DEFAULT NULL,
+potencia_w INT DEFAULT NULL,
+status ENUM('Ativo', 'Inativo', 'Defeito') NOT NULL DEFAULT 'Ativo',
+CONSTRAINT pk_arcondicionado PRIMARY KEY (id_ar)
+);
+
+CREATE TABLE alocacao (
+id_alocacao INT AUTO_INCREMENT NOT NULL,
+id_ar INT NOT NULL,
+id_sala INT NOT NULL,
+data_instalacao DATE NOT NULL,
+data_remocao DATE DEFAULT NULL,
+status_alocacao ENUM('Ativo', 'Encerrado') NOT NULL DEFAULT 'Ativo',
+CONSTRAINT pk_alocacao PRIMARY KEY (id_alocacao),
+CONSTRAINT fk_alocacao_ar FOREIGN KEY (id_ar) REFERENCES arcondicionado (id_ar),
+CONSTRAINT fk_alocacao_sala FOREIGN KEY (id_sala) REFERENCES sala (id_sala)
+);
+
+CREATE TABLE manutencao (
+id_manutencao INT AUTO_INCREMENT NOT NULL,
+id_ar INT NOT NULL,
+id_usuario INT NOT NULL,
+data_manutencao DATETIME NOT NULL,
+tipo ENUM('Preventiva', 'Corretiva') NOT NULL,
+descricao_servico TEXT NOT NULL,
+custo DECIMAL(10,2) DEFAULT 0.00,
+proxima_manutencao DATE DEFAULT NULL,
+CONSTRAINT pk_manutencao PRIMARY KEY (id_manutencao),
+CONSTRAINT fk_manutencao_ar FOREIGN KEY (id_ar) REFERENCES arcondicionado (id_ar),
+CONSTRAINT fk_manutencao_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario)
+);
