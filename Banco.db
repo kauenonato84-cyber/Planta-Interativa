@@ -2,69 +2,69 @@ CREATE DATABASE gestao_climatizacao;
 USE gestao_climatizacao;
 
 CREATE TABLE usuario (
-id_usuario INT AUTO_INCREMENT NOT NULL,
-situacao ENUM ('Ativo', 'Inativo') NOT NULL DEFAULT 'Inativo',
-nome VARCHAR(100) NOT NULL,
-email VARCHAR(100) NOT NULL UNIQUE,
-senha VARCHAR(255) NOT NULL,
-perfil ENUM('Admin', 'Tecnico') NOT NULL DEFAULT 'Tecnico',
-data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT pk_usuario PRIMARY KEY (id_usuario)
+    id_usuario INT AUTO_INCREMENT NOT NULL COMMENT 'ID único do usuário',
+    situacao ENUM('Ativo', 'Inativo') NOT NULL DEFAULT 'Inativo' COMMENT 'Status do usuário',
+    nome VARCHAR(100) NOT NULL COMMENT 'Nome completo',
+    email VARCHAR(100) NOT NULL UNIQUE COMMENT 'E-mail de login',
+    senha VARCHAR(255) NOT NULL COMMENT 'Senha criptografada',
+    perfil ENUM('Admin', 'Tecnico') NOT NULL DEFAULT 'Tecnico' COMMENT 'Perfil de acesso',
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de criação do registro',
+    CONSTRAINT pk_usuario PRIMARY KEY (id_usuario)
 );
 
-CREATE TABLE bloco(
-codigo INT AUTO_INCREMENT NOT NULL,
-nome VARCHAR (60) NOT NULL,
-descricao VARCHAR (100) NOT NULL,
-CONSTRAINT pk_bloco PRIMARY KEY (codigo)
+CREATE TABLE bloco (
+    id_bloco INT AUTO_INCREMENT NOT NULL COMMENT 'ID único do bloco',
+    nome VARCHAR(60) NOT NULL COMMENT 'Nome do bloco (ex: Bloco A, Bloco Administrativo)',
+    descricao VARCHAR(100) DEFAULT NULL COMMENT 'Descrição adicional do bloco',
+    CONSTRAINT pk_bloco PRIMARY KEY (id_bloco)
 );
 
 CREATE TABLE sala (
-id_sala INT AUTO_INCREMENT NOT NULL,
-codigo_sala VARCHAR(50) NOT NULL UNIQUE,
-id_bloco INT NOT NULL,
-andar VARCHAR(20) DEFAULT NULL,
-tipo_ambiente VARCHAR(50) DEFAULT NULL,
-area_m2 DECIMAL(6,2) DEFAULT NULL,
-capacidade_pessoas INT DEFAULT NULL,
-CONSTRAINT pk_sala PRIMARY KEY (id_sala),
-CONSTRAINT fk_bloco FOREIGN KEY (id_bloco) REFERENCES bloco (codigo)
+    id_sala INT AUTO_INCREMENT NOT NULL COMMENT 'ID único da sala (usar este ID nas relações)',
+    codigo_sala VARCHAR(50) NOT NULL UNIQUE COMMENT 'Código visual da sala (ex: A-101, Lab-03)',
+    id_bloco INT NOT NULL COMMENT 'FK para o bloco',
+    andar VARCHAR(20) DEFAULT NULL COMMENT 'Andar (ex: Térreo, 1º, 2º)',
+    tipo_ambiente VARCHAR(50) DEFAULT NULL COMMENT 'Tipo (ex: Sala de aula, Laboratório, Escritório)',
+    area_m2 DECIMAL(6,2) DEFAULT NULL COMMENT 'Área em m²',
+    capacidade_pessoas INT DEFAULT NULL COMMENT 'Capacidade de pessoas',
+    CONSTRAINT pk_sala PRIMARY KEY (id_sala),
+    CONSTRAINT fk_sala_bloco FOREIGN KEY (id_bloco) REFERENCES bloco (id_bloco)
 );
 
 CREATE TABLE arcondicionado (
-id_ar INT AUTO_INCREMENT NOT NULL,
-numero_serie VARCHAR(100) DEFAULT NULL,
-marca VARCHAR(50) NOT NULL,
-modelo VARCHAR(50) DEFAULT NULL,
-capacidade_btu INT DEFAULT NULL,
-tensao_v INT DEFAULT NULL,
-potencia_w INT DEFAULT NULL,
-status ENUM('Ativo', 'Inativo', 'Defeito') NOT NULL DEFAULT 'Ativo',
-CONSTRAINT pk_arcondicionado PRIMARY KEY (id_ar)
+    id_ar INT AUTO_INCREMENT NOT NULL COMMENT 'ID único do ar-condicionado',
+    numero_serie VARCHAR(100) DEFAULT NULL COMMENT 'Número de série do equipamento',
+    marca VARCHAR(50) NOT NULL COMMENT 'Marca',
+    modelo VARCHAR(50) DEFAULT NULL COMMENT 'Modelo',
+    capacidade_btu INT DEFAULT NULL COMMENT 'Capacidade em BTU',
+    tensao_v INT DEFAULT NULL COMMENT 'Tensão (V)',
+    potencia_w INT DEFAULT NULL COMMENT 'Potência (W)',
+    status ENUM('Ativo', 'Inativo', 'Defeito') NOT NULL DEFAULT 'Ativo' COMMENT 'Status do equipamento',
+    CONSTRAINT pk_arcondicionado PRIMARY KEY (id_ar)
 );
 
 CREATE TABLE alocacao (
-id_alocacao INT AUTO_INCREMENT NOT NULL,
-id_ar INT NOT NULL,
-id_sala INT NOT NULL,
-data_instalacao DATE NOT NULL,
-data_remocao DATE DEFAULT NULL,
-status_alocacao ENUM('Ativo', 'Encerrado') NOT NULL DEFAULT 'Ativo',
-CONSTRAINT pk_alocacao PRIMARY KEY (id_alocacao),
-CONSTRAINT fk_alocacao_ar FOREIGN KEY (id_ar) REFERENCES arcondicionado (id_ar),
-CONSTRAINT fk_alocacao_sala FOREIGN KEY (id_sala) REFERENCES sala (id_sala)
+    id_alocacao INT AUTO_INCREMENT NOT NULL COMMENT 'ID único da alocação',
+    id_ar INT NOT NULL COMMENT 'FK do ar-condicionado',
+    id_sala INT NOT NULL COMMENT 'FK da sala (sempre usar o ID inteiro)',
+    data_instalacao DATE NOT NULL COMMENT 'Data de instalação',
+    data_remocao DATE DEFAULT NULL COMMENT 'Data de remoção (se houver)',
+    status_alocacao ENUM('Ativo', 'Encerrado') NOT NULL DEFAULT 'Ativo' COMMENT 'Status da alocação',
+    CONSTRAINT pk_alocacao PRIMARY KEY (id_alocacao),
+    CONSTRAINT fk_alocacao_ar FOREIGN KEY (id_ar) REFERENCES arcondicionado (id_ar),
+    CONSTRAINT fk_alocacao_sala FOREIGN KEY (id_sala) REFERENCES sala (id_sala)
 );
 
 CREATE TABLE manutencao (
-id_manutencao INT AUTO_INCREMENT NOT NULL,
-id_ar INT NOT NULL,
-id_usuario INT NOT NULL,
-data_manutencao DATETIME NOT NULL,
-tipo ENUM('Preventiva', 'Corretiva') NOT NULL,
-descricao_servico TEXT NOT NULL,
-custo DECIMAL(10,2) DEFAULT 0.00,
-proxima_manutencao DATE DEFAULT NULL,
-CONSTRAINT pk_manutencao PRIMARY KEY (id_manutencao),
-CONSTRAINT fk_manutencao_ar FOREIGN KEY (id_ar) REFERENCES arcondicionado (id_ar),
-CONSTRAINT fk_manutencao_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario)
+    id_manutencao INT AUTO_INCREMENT NOT NULL COMMENT 'ID único da manutenção',
+    id_ar INT NOT NULL COMMENT 'FK do ar-condicionado',
+    id_usuario INT NOT NULL COMMENT 'FK do técnico responsável',
+    data_manutencao DATETIME NOT NULL COMMENT 'Data e hora da manutenção',
+    tipo ENUM('Preventiva', 'Corretiva') NOT NULL COMMENT 'Tipo de manutenção',
+    descricao_servico TEXT NOT NULL COMMENT 'Descrição do serviço realizado',
+    custo DECIMAL(10,2) DEFAULT 0.00 COMMENT 'Custo do serviço',
+    proxima_manutencao DATE DEFAULT NULL COMMENT 'Data prevista para próxima manutenção',
+    CONSTRAINT pk_manutencao PRIMARY KEY (id_manutencao),
+    CONSTRAINT fk_manutencao_ar FOREIGN KEY (id_ar) REFERENCES arcondicionado (id_ar),
+    CONSTRAINT fk_manutencao_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario)
 );

@@ -20,17 +20,45 @@ const plantaSvg = document.getElementById('plantaSvg');
         salaSelecionada = sala; 
         document.getElementById('nomeSala').textContent = sala.id;
     }
+    
+    function carregarInfoSala(elemento) {
+    const idSala = elemento.getAttribute('data-id');
+
+    document.getElementById('nomeSala').textContent = elemento.id;
+
+    if (!idSala) {
+        document.getElementById('information_painel').innerHTML = 
+            "<p>Esta sala ainda não está cadastrada no banco.</p>";
+        return;
+    }
+
+    fetch('database_query.php?idSala=' + idSala)
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(html) {
+            document.getElementById('information_painel').innerHTML = html;
+        })
+        .catch(function() {
+            document.getElementById('information_painel').innerHTML = 
+                "<p>Erro ao carregar as informações.</p>";
+        });
+}
 
     function resetarZoom() {
-      if (salaSelecionada) {
-        salaSelecionada.classList.remove('selecionada');
-        salaSelecionada.style.removeProperty('--mover-x');
-        salaSelecionada.style.removeProperty('--mover-y');
-        salaSelecionada = null;
-      }
-        salas.forEach((sala) => plantaSvg.appendChild(sala));
-        document.getElementById('nomeSala').textContent = 'Clique na sala';
-    }
+  if (salaSelecionada) {
+    salaSelecionada.classList.remove('selecionada');
+    salaSelecionada.style.removeProperty('--mover-x');
+    salaSelecionada.style.removeProperty('--mover-y');
+    salaSelecionada = null;
+  }
+  
+  salas.forEach((sala) => plantaSvg.appendChild(sala));
+
+  document.getElementById('nomeSala').textContent = 'Clique na sala';
+
+  document.getElementById('information_painel').innerHTML = '';
+}
 
 function carregarDadosSala(sala) {
     const painel = document.getElementById('information_painel');
